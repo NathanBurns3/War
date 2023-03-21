@@ -7,7 +7,7 @@ class Deck {
 public:
     Node* head;
     int numOfCards;
-    Deck();
+    Deck(int startingCards);
     ~Deck();
     void AddCard(int card);
     int RemoveCard();

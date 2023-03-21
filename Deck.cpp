@@ -1,11 +1,11 @@
 #include "Deck.h"
 #include <iostream>
 
-Deck::Deck() {
+Deck::Deck(int startingCards) {
     head = nullptr;
     numOfCards = 0;
     // Add 20 cards to deck
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < startingCards; i++) {
         // Create a card with a random value between 1-12
         int card = rand() % 11 + 1;
         // Add the card to the deck

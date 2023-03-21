@@ -11,9 +11,9 @@ int main() {
     //Variable to hold the users decision on push/pull a card
     int PushOrPull;
 
-    // Create decks for the player and computer
-    Deck userDeck = Deck();
-    Deck computerDeck = Deck();
+    // Create decks for the player and computer that has 20 cards
+    Deck userDeck = Deck(20);
+    Deck computerDeck = Deck(20);
 
     // Create a side pile for the player
     SidePile userPile = SidePile();
@@ -28,12 +28,21 @@ int main() {
     bool userWon = false;
     bool computerWon = false;
 
-    //std::cout << "Here is the users top card: " << userDeck.RemoveCard();
-    //std::cout << "Here is the computers top card: " << computerDeck.RemoveCard();
+    /*
+    std::cout << "Here is the users top card: " << userDeck.RemoveCard() << "\n";
+    std::cout << "Here is the computers top card: " << computerDeck.RemoveCard() << "\n";
+    std::cout << "Here is the users 2nd card: " << userDeck.RemoveCard() << "\n";
+    std::cout << "Here is the computers 2nd card: " << computerDeck.RemoveCard() << "\n";
+    std::cout << "Here is the users 3rd card: " << userDeck.RemoveCard() << "\n";
+    std::cout << "Here is the computers 3rd card: " << computerDeck.RemoveCard() << "\n";
+    std::cout << "Here is the users 4th card: " << userDeck.RemoveCard() << "\n";
+    std::cout << "Here is the computers 4th card: " << computerDeck.RemoveCard() << "\n";
+    std::cout << "Here is the users 5th card: " << userDeck.RemoveCard() << "\n";
+    std::cout << "Here is the computers 5th card: " << computerDeck.RemoveCard() << "\n";
+    */
 
     // State the style of play
     std::cout << "The game will be played until a player is out of cards\n";
-    return 0;
 
     // While both players still have cards keep playing
     while(keepPlaying) {
@@ -55,7 +64,7 @@ int main() {
 
         // If the user doesn't have any cards in their side deck
         if (userPile.GetNumOfCards() <= 0) {
-            std::cout << "Your side pile is empty so you need to push your card or keep your current card";
+            std::cout << "Your side pile is empty so you need to push your card or keep your current card\n";
             std::cout << "Press 2: Push your card\n";
             std::cout << "Press 3: Play your current card\n";
             std::cout << "Your choice: ";
@@ -71,7 +80,7 @@ int main() {
         }
         // If the user's pile has the maxed amount of cards (5)
         else if (userPile.GetNumOfCards() >= 5) {
-            std::cout << "Your side pile is full so you need to pull a card or keep your current card";
+            std::cout << "Your side pile is full so you need to pull a card or keep your current card\n";
             std::cout << "Press 1: Pull out a card\n";
             std::cout << "Press 3: Play your current card\n";
             std::cout << "Your choice: ";
