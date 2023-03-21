@@ -6,40 +6,35 @@
 int main() {
     // Variable to determine if the game should still be played
     bool keepPlaying = true;
+
     // Variable to determine if the user wants to see how many cards are in the computers deck
     std::string checkComputersDeck;
-    //Variable to hold the users decision on push/pull a card
+
+    //Variable to hold the user and computers decision on push/pull a card
     int PushOrPull;
+    int computerChoice;
 
     // Create decks for the player and computer that has 20 cards
     Deck userDeck = Deck(20);
     Deck computerDeck = Deck(20);
 
-    // Create a side pile for the player
+    // Create a side pile for the player and computer
     SidePile userPile = SidePile();
+    SidePile computerPile = SidePile();
 
-    // Create a card variable for the player and computer
+    // Create a card variables for the player
     int userCard;
-    int computerCard;
     int userPulledCard;
     int userCardScore;
+
+    // Create a card variables for the computer
+    int computerCard;
+    int computerPulledCard;
+    int computerCardScore;
 
     // Create bool variables to determine who won
     bool userWon = false;
     bool computerWon = false;
-
-    /*
-    std::cout << "Here is the users top card: " << userDeck.RemoveCard() << "\n";
-    std::cout << "Here is the computers top card: " << computerDeck.RemoveCard() << "\n";
-    std::cout << "Here is the users 2nd card: " << userDeck.RemoveCard() << "\n";
-    std::cout << "Here is the computers 2nd card: " << computerDeck.RemoveCard() << "\n";
-    std::cout << "Here is the users 3rd card: " << userDeck.RemoveCard() << "\n";
-    std::cout << "Here is the computers 3rd card: " << computerDeck.RemoveCard() << "\n";
-    std::cout << "Here is the users 4th card: " << userDeck.RemoveCard() << "\n";
-    std::cout << "Here is the computers 4th card: " << computerDeck.RemoveCard() << "\n";
-    std::cout << "Here is the users 5th card: " << userDeck.RemoveCard() << "\n";
-    std::cout << "Here is the computers 5th card: " << computerDeck.RemoveCard() << "\n";
-    */
 
     // State the style of play
     std::cout << "The game will be played until a player is out of cards\n";
@@ -57,6 +52,7 @@ int main() {
         else {
             userCard = userDeck.RemoveCard();
         }
+        // The computer draws a card
         computerCard = computerDeck.RemoveCard();
 
         // User peeks at their card
@@ -143,16 +139,52 @@ int main() {
         // State the card scores
         std::cout << "Your card score: " << userCardScore << " | Computers card score: " << computerCard << "\n";
 
+        // The computer pulls, pushes, or keeps their card from their pile
+        // If the computer's pile has between 1-4 cards
+        if (computerPile.GetNumOfCards() > 0 && computerPile.GetNumOfCards() < 5) {
+            // Random choice between 1-3
+            computerChoice = rand() % 3 + 1;
+            // The computer selects to pull a card
+            if (computerChoice == 1) {
+                // Pull a card from the side pile
+                computerPulledCard = computerPile.RemoveCard();
+                std::cout << "The computer pulled a card\n";
+            }
+            // The computer selects to push their card
+            else if (computerChoice == 2) {
+                // Add the card to the side pile
+                computerPile.AddCard(computerCard);
+                // Draw a new card from the deck (or pile if the deck is empty)
+                // If their deck is empty, pull from their side pile
+                if (computerDeck.GetNumOfCards() <= 0) {
+                    computerCard = computerPile.RemoveCard();
+                }
+                // If their deck is not empty, pull from their deck
+                else {
+                    computerCard = computerDeck.RemoveCard();
+                }
+                std::cout << "The computer pushed their card\n";
+                computerPulledCard = 0;
+            }
+            // The computer didn't select to push or pull a card
+            // Add the card(s) value(s) to the card score variable
+            computerCardScore = computerCard + computerPulledCard;
+        }
+
         // Compare the Users and Computers cards
         // If the user wins
-        if (userCardScore > computerCard) {
+        if (userCardScore > computerCardScore) {
             std::cout << "You win this round\n";
             // Add the users card and the computers card to the users deck
             userDeck.AddCard(userCard);
             userDeck.AddCard(computerCard);
-            // If the user selected to pull a card add their pulled card to their deck
+            // If the user selected to pull a card, add their pulled card to their deck
             if (PushOrPull == 1) {
                 userDeck.AddCard(userPulledCard);
+            }
+            // If the computer selected to pull a card, add their pulled card to their deck
+            if (computerChoice == 1) {
+                userDeck.AddCard(computerPulledCard);
             }
         }
         // If the computer wins
@@ -161,9 +193,13 @@ int main() {
             // Add the users card and the computers card to the users deck
             computerDeck.AddCard(userCard);
             computerDeck.AddCard(computerCard);
-            // If the user selected to pull a card add their pulled card to their deck
+            // If the user selected to pull a card, add their pulled card to their deck
             if (PushOrPull == 1) {
                 computerDeck.AddCard(userPulledCard);
+            }
+            // If the computer selected to pull a card, add their pulled card to their deck
+            if (computerChoice == 1) {
+                userDeck.AddCard(computerPulledCard);
             }
         }
 
@@ -189,7 +225,7 @@ int main() {
             keepPlaying = false;
         }
         // If the computer doesn't have any cards left in their deck
-        else if (computerDeck.GetNumOfCards() == 0) {
+        else if (computerDeck.GetNumOfCards() == 0 && computerPile.GetNumOfCards() == 0) {
             userWon = true;
             keepPlaying = false;
         }
