@@ -26,8 +26,8 @@ void SidePile::AddCard(int card) {
 
 int SidePile::RemoveCard() {
     if (numOfCards > 0) {
-        return Cards[numOfCards - 1];
         numOfCards--;
+        return Cards[numOfCards - 1];
     }
     else {
         //throw StackOverflowException("There aren't any cards in the pile");

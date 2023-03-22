@@ -15,8 +15,8 @@ int main() {
     int computerChoice;
 
     // Create decks for the player and computer that has 20 cards
-    Deck userDeck = Deck(5);
-    Deck computerDeck = Deck(5);
+    Deck userDeck = Deck(2);
+    Deck computerDeck = Deck(2);
 
     // Create a side pile for the player and computer
     SidePile userPile = SidePile();
@@ -42,7 +42,7 @@ int main() {
     // While both players still have cards keep playing
     while(keepPlaying) {
 
-        // Draw a card for the user and computer
+        // Draw a card for the user
         // If their deck is empty, pull from their side pile
         if (userDeck.GetNumOfCards() <= 0) {
             std::cout << "Drew from your side pile\n";
@@ -52,8 +52,16 @@ int main() {
         else {
             userCard = userDeck.RemoveCard();
         }
-        // The computer draws a card
-        computerCard = computerDeck.RemoveCard();
+        
+        // Draw a card for the computer
+        // If their deck is empty, pull from their side pile
+        if (computerDeck.GetNumOfCards() <= 0) {
+            computerCard = computerPile.RemoveCard();
+        }
+        // If their deck is not empty, pull from their deck
+        else {
+            computerCard = computerDeck.RemoveCard();
+        }
 
         // User peeks at their card
         std::cout << "The card you drew is a " << userCard << "\n";
