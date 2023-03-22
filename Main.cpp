@@ -15,8 +15,8 @@ int main() {
     int computerChoice;
 
     // Create decks for the player and computer that has 20 cards
-    Deck userDeck = Deck(20);
-    Deck computerDeck = Deck(20);
+    Deck userDeck = Deck(5);
+    Deck computerDeck = Deck(5);
 
     // Create a side pile for the player and computer
     SidePile userPile = SidePile();
@@ -108,6 +108,9 @@ int main() {
                 std::cin >> PushOrPull;
             }
         }
+        
+        // Set the users pulled card to 0
+        userPulledCard = 0;
 
         // If the user selected 1 (Pull a card)
         if (PushOrPull == 1){
@@ -136,8 +139,8 @@ int main() {
         // Add the card(s) value(s) to the card score variable
         userCardScore = userCard + userPulledCard;
 
-        // State the card scores
-        std::cout << "Your card score: " << userCardScore << " | Computers card score: " << computerCard << "\n";
+        // Set the users pulled card to 0
+        computerPulledCard = 0;
 
         // The computer pulls, pushes, or keeps their card from their pile
         // If the computer's pile has between 1-4 cards
@@ -167,9 +170,47 @@ int main() {
                 computerPulledCard = 0;
             }
             // The computer didn't select to push or pull a card
-            // Add the card(s) value(s) to the card score variable
-            computerCardScore = computerCard + computerPulledCard;
         }
+        // If the computer's pile is empty
+        else if (computerPile.GetNumOfCards() <= 0) {
+            // Random choice between 1-2
+            computerChoice = rand() % 2 + 1;
+            // The computer selects to push their card
+            if (computerChoice == 1) {
+                // Add the card to the side pile
+                computerPile.AddCard(computerCard);
+                // Draw a new card from the deck (or pile if the deck is empty)
+                // If their deck is empty, pull from their side pile
+                if (computerDeck.GetNumOfCards() <= 0) {
+                    computerCard = computerPile.RemoveCard();
+                }
+                // If their deck is not empty, pull from their deck
+                else {
+                    computerCard = computerDeck.RemoveCard();
+                }
+                std::cout << "The computer pushed their card\n";
+                computerPulledCard = 0;
+            }
+            // The computer didn't select to push or pull a card
+        }
+        // If the computer's pile is full (5)
+        else {
+            // Random choice between 1-2
+            computerChoice = rand() % 2 + 1;
+            // The computer selects to pull a card
+            if (computerChoice == 1) {
+                // Pull a card from the side pile
+                computerPulledCard = computerPile.RemoveCard();
+                std::cout << "The computer pulled a card\n";
+            }
+            // The computer didn't select to push or pull a card
+        }
+
+        // Add the card(s) value(s) to the card score variable
+        computerCardScore = computerCard + computerPulledCard;
+        
+        // State the card scores
+        std::cout << "Your card score: " << userCardScore << " | Computers card score: " << computerCard << "\n";
 
         // Compare the Users and Computers cards
         // If the user wins
@@ -215,7 +256,7 @@ int main() {
         }
         // If the user wants to see how many cards are in the computers deck
         if (checkComputersDeck == "Y" || checkComputersDeck == "y") {
-            std::cout << "\nThe computer has " << computerDeck.GetNumOfCards() << " cards left in their deck\n";
+            std::cout << "The computer has " << computerDeck.GetNumOfCards() << " cards left in their deck\n";
         }
 
         // Check to see if the game should end
